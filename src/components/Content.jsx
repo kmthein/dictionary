@@ -5,7 +5,6 @@ import { IoSearch } from "react-icons/io5";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { UiContext } from "../contexts/UiContext";
 import { BsEmojiFrown } from "react-icons/bs";
-import ReactPlayer from "react-player";
 
 const Content = () => {
   const { currentContent, error } = useContext(SearchContext);
@@ -17,7 +16,6 @@ const Content = () => {
     targetAudio.play();
   };
 
-  console.log(currentContent);
   return (
     <>
       {loading && (
