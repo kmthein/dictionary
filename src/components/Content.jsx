@@ -4,11 +4,18 @@ import { SearchContext } from "../contexts/SearchContext";
 import { IoSearch } from "react-icons/io5";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { UiContext } from "../contexts/UiContext";
+import { BsEmojiFrown } from "react-icons/bs";
+import ReactPlayer from "react-player";
 
 const Content = () => {
-  const { currentContent } = useContext(SearchContext);
+  const { currentContent, error } = useContext(SearchContext);
 
   const { loading } = useContext(UiContext);
+
+  const audioPlay = () => {
+    const targetAudio = document.getElementsByClassName("audio")[0];
+    targetAudio.play();
+  };
 
   console.log(currentContent);
   return (
@@ -27,12 +34,22 @@ const Content = () => {
           />
         </div>
       )}
-      {!loading && !currentContent && (
+      {!loading && error && !currentContent && (
+        <div className="flex items-center justify-center mt-[10%]">
+          <div className=" text-gray-400">
+            <BsEmojiFrown className="text-5xl mb-3 mx-auto" />
+            <p className="text-center font-medium text-xl">
+              No Definitions Found
+            </p>
+          </div>
+        </div>
+      )}
+      {!loading && !currentContent && !error && (
         <div className="flex items-center justify-center mt-[10%]">
           <div className=" text-gray-400">
             <IoSearch className="text-5xl mb-3 mx-auto" />
             <p className="text-center font-medium text-xl">
-              Welcome To My Dictionary
+              Welcome to My Dictionary
             </p>
           </div>
         </div>
@@ -41,9 +58,24 @@ const Content = () => {
         <div className="pt-4">
           <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">{currentContent[0].word}</h1>
-            <div className=" bg-[#add0fc] py-4 px-4 rounded-full">
-              <IoPlay className="text-xl text-[#3a6ead]" />
-            </div>
+            {currentContent[0].phonetics[currentContent[0].phonetics.length - 1]
+              .audio && (
+              <div className=" bg-[#add0fc] py-4 px-4 rounded-full">
+                <IoPlay
+                  className="text-xl text-[#3a6ead]"
+                  onClick={audioPlay}
+                />
+              </div>
+            )}
+            <audio className="audio">
+              <source
+                src={
+                  currentContent[0].phonetics[
+                    currentContent[0].phonetics.length - 1
+                  ].audio
+                }
+              ></source>
+            </audio>
           </div>
           <span className="text-[#3a6ead] text-xl">
             {currentContent[0].phonetic}
@@ -72,7 +104,7 @@ const Content = () => {
                     Synonyms
                   </p>
                   {content.meanings[0].synonyms.map((s, i) => (
-                    <span>
+                    <span key={i}>
                       {s}
                       {i != s.length - 1 && ", "}
                     </span>
