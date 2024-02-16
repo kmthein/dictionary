@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar'
 import Content from '../components/Content'
 import { UiContext } from '../contexts/UiContext'
 
+
 const Main = () => {
     const {darkMode} = useContext(UiContext);
 
@@ -17,7 +18,6 @@ const Main = () => {
         } else {
             document.documentElement.classList.remove("dark");
         }
-        console.log(darkMode);
     })
 
   return (

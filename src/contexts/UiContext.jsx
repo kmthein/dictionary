@@ -6,8 +6,10 @@ export const UiContextProvider = ({ children }) => {
     const isDarkMode = localStorage.getItem("theme") ? true : false;
     const [darkMode, setDarkMode] = useState(isDarkMode);
 
+    const [loading, setLoading] = useState(false);
+
     return (
-        <UiContext.Provider value={{ darkMode, setDarkMode }}>
+        <UiContext.Provider value={{ darkMode, setDarkMode, loading, setLoading }}>
             {children}
         </UiContext.Provider>
     )
